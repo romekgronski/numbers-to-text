@@ -1,0 +1,98 @@
+print('Enter a number in the range from 1 to 999 999 999')
+n = input()
+
+# numbers dictionary contains elements that will be combined to create result
+
+numbers = {
+    0:'',
+    1:'jeden',
+    2:'dwa',
+    3:'trzy',
+    4:'cztery',
+    5:'pięć',
+    6:'sześć',
+    7:'siedem',
+    8:'osiem',
+    9:'dziewięć',
+    11:'jedenaście',
+    12:'dwanaście',
+    13:'trzynaście',
+    14:'czternaście',
+    15:'piętnaście',
+    16:'szesnaście',
+    17:'siedemnaście',
+    18:'osiemnaście',
+    19:'dziewiętnaście',
+    10:'dziesięć',
+    20:'dwadzieścia',
+    30:'trzydzieści',
+    40:'czterdzieści',
+    50:'pięćdziesiąt',
+    60:'sześćdziesiąt',
+    70:'siedemdziesiąt',
+    80:'osiemdziesiąt',
+    90:'dziewięćdziesiąt',
+    100:'sto',
+    200:'dwieście',
+    300:'trzysta',
+    400:'czterysta',
+    500:'pięćset',
+    600:'sześćset',
+    700:'siedemset',
+    800:'osiemset',
+    900:'dziewięćset',
+}
+
+num_keys = numbers.keys()
+keys_list = list(num_keys)
+
+
+l = len(str(n))
+n_list = list(map(int,str(n)))
+multiple = [1,10,100,1,10,100,1,10,100]
+multiple = multiple[:l] 
+multiple.reverse()
+words = []
+result=''
+
+if n in num_keys:     #if the input number is among keys of numbers dictionary, the result is simply the value for that key
+  result = numbers[n]
+else:
+  new_list = [n_list[i] * multiple[i] for i in range(l)]  #creating a list of integers that will be translated to words
+  for i in range(l):
+    if new_list[i] == 10:
+      new_list[i] = new_list[i]+new_list[i+1]
+      new_list[i+1] = 0
+  for j in new_list:
+    words.append(numbers[j])
+
+#conjugation of thousand
+if l == 4 and new_list[-4] == 1:
+  words.insert(-3,'tysiąc')
+elif l > 3 and new_list[-4] in [2,3,4]:
+  words.insert(-3,'tysiące')
+elif l > 6 and new_list[-4] == 1 and new_list[-5] == 0 and new_list[-6] == 0:
+  words.insert(-3,'tysiąc')
+elif l > 3:
+  words.insert(-3,'tysięcy')
+
+#conjugation of million
+if l == 7 and new_list[-7] == 1:
+  words.insert(-7,'milion')
+elif l > 6 and new_list[-7] in [2,3,4]:
+  words.insert(-7,'miliony')
+elif l > 6:
+  words.insert(-7,'milionów')
+
+if l > 6 and new_list[-4] == 0 and new_list[-5] == 0 and new_list[-6] == 0:
+  words.pop(-4)
+
+r = ''
+while r in words:
+  words.remove(r)
+
+result2 = " ".join(words)
+
+result = result + result2
+
+print(result)
